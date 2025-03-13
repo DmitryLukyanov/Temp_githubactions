@@ -112,11 +112,11 @@ runs:
         if ($descriptionNode -ne $null) {
             $temp=[System.Web.HttpUtility]::HtmlDecode("$git_description")
             Write-Host "!!! $temp"
-            $descriptionNode.InnerText = $temp
+            $descriptionNode.InnerText = "temp"
         } else {
             Write-Host "<description> node not found."
         }
-        $xmlDoc.Save($xmlPath)
+        # $xmlDoc.Save($xmlPath)
         cat $xmlPath
 
     # - name: Custom pack
