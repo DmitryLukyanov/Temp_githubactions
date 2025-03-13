@@ -43,8 +43,8 @@ jobs:
         project_directory: ./SPZipper
         # repo must be accesible
         nuget_name: Complited_default_debug
-        nuget_version: "5.0.0"
-        configuration: "Debug"
+        nuget_version: "1.0.0"
+        configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
 
     #   # -MSBuildVersion: 16.11.2.50704 might be required too
