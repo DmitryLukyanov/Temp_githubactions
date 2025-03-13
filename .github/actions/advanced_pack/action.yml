@@ -83,41 +83,34 @@ runs:
             Write-Host "Nuspec file has not been found in $nuspecFiles"
             exit 1
         }
-        cd SpZipper
-        ls
-    #     # Define the path to your nuSpec file (adjust if necessary)
-    #     $xmlPath = Join-Path -Path $PSScriptRoot -ChildPath "SPZipper/SPZipper.nuspec"
-    #     if (-not (Test-Path $xmlPath)) {
-    #         throw "Error: The file path '$($xmlPath)' does not exist."
-    #     }
-    #     # Load the XML document
-    #     [xml]$xmlDoc = Get-Content -Raw  $xmlPath
-    #     # Create a namespace manager for the default namespace
-    #     $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
-    #     $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
-    #     # Update the <id> node
-    #     $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
-    #     if ($idNode -ne $null) {
-    #         $idNode.InnerText = ${{ inputs.nuget_name }}
-    #         Write-Host "<id> has been found: $($idNode.InnerText)."
-    #     } else {
-    #         Write-Host "<id> node not found."
-    #     }
-
-    #     # Update the <description> node (supports multi-line text)
-    #     $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
-    #     if ($descriptionNode -ne $null) {
-    #         $descriptionNode.InnerText = "This is line 1
-    #     This is line 2
-    #     This is line 3"
-    #     } else {
-    #         Write-Host "<description> node not found."
-    #     }
-
-
-    #     # Save the updated XML back to the file
-    #     $xmlDoc.Save($xmlPath)
-    #     Write-Host "XML document updated successfully!."
+        # Define the path to your nuSpec file (adjust if necessary)
+        $xmlPath = Join-Path -Path $PSScriptRoot -ChildPath "SPZipper/SPZipper.nuspec"
+        if (-not (Test-Path $xmlPath)) {
+            throw "Error: The file path '$($xmlPath)' does not exist."
+        }
+        # Load the XML document
+        [xml]$xmlDoc = Get-Content -Raw  $xmlPath
+        $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
+        $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
+        # Update the <id> node
+        $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
+        if ($idNode -ne $null) {
+            $idNode.InnerText = ${{ inputs.nuget_name }}
+            Write-Host "<id> has been found: $($idNode.InnerText)."
+        } else {
+            Write-Host "<id> node not found."
+        }
+        # Update the <description> node (supports multi-line text)
+        $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
+        if ($descriptionNode -ne $null) {
+            $descriptionNode.InnerText = "This is line 1
+        This is line 2
+        This is line 3"
+        } else {
+            Write-Host "<description> node not found."
+        }
+        $xmlDoc.Save($xmlPath)
+        cat $xmlPath
 
     # - name: Custom pack
     #   shell: bash
