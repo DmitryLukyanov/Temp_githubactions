@@ -76,7 +76,7 @@ runs:
       shell: pwsh
       run: |
         cd ${{ inputs.working_directory }}
-        nuspec_Destination=${{ env.nuspec_destination }}
+        $nuspec_Destination = $env:nuspec_destination
         Write-Host "Nuspec destination: $nuspec_Destination"
         # $nuspecFiles = Get-ChildItem -Path $nuspec_Destination -Filter *.nuspec -File
         # if (!$nuspecFiles) {
