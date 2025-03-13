@@ -42,7 +42,7 @@ jobs:
         working_directory: .
         project_directory: ./SPZipper
         nuget_name: Complited_default_debug
-        nuget_version: "3.0.0"
+        nuget_version: "4.0.0"
         configuration: "Debug"
         output_path: ${{ env.PACKAGE_PATH }}
 
