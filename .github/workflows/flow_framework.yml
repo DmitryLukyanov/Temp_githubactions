@@ -41,7 +41,7 @@ jobs:
       with:
         working_directory: .
         project_directory: ./SPZipper
-        nuget_name: TR.SPBinder.SPZipper_debug
+        nuget_name: Complited_default_debug
         nuget_version: "2.0.0"
         configuration: "Debug"
         output_path: ${{ env.PACKAGE_PATH }}
@@ -59,4 +59,24 @@ jobs:
         path: ${{ env.PACKAGE_PATH }}
 
     # add tests and code quality gates
- 
+
+  publish:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+      - name: Download nupkg artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: legacy_nuget_artifacts
+          path: ./artifacts
+
+      - name: Publish to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        shell: bash
+        run: |
+          for pkg in ./artifacts/*.nupkg; do
+            echo "Publishing ${pkg}..."
+            nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
+          done
