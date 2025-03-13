@@ -33,7 +33,7 @@ runs:
         echo "Starting default pack.."
         nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -Symbols -OutputDirectory ${{ inputs.output_path }} -Version $version
 
-    - name: Prepare nuspec
+    - name: Copy nuspec file
       shell: bash
       run: |
         # TODO: skip if the nuspec already exists
@@ -56,22 +56,13 @@ runs:
           echo "Nuspec $nuspec_file has not been found"
           exit 1
         fi
-        # 1. Nuget name
-        nuget_name=${{ inputs.nuget_name }}
-        # update package name
         echo "Nuget name: $nuget_name"
-        # 2. Git description
-        # update description
-        git_description=$(git show --summary)
-        echo "Git description: $git_description"
-        echo "git_description=${git_description}" >> $GITHUB_ENV
-        # 3. Nuspec file path
-        # project_directory=${{ inputs.project_directory }}
-        # nuspec_destination=${GITHUB_WORKSPACE%/}/${project_directory#./}
-        # echo -e "\nNuspec destination: $nuspec_destination"
-        # # Copy nuspec file
-        # cp $nuspec_file $nuspec_destination
-        # echo "nuspec_destination=${nuspec_destination}" >> $GITHUB_ENV
+        project_directory=${{ inputs.project_directory }}
+        nuspec_destination=${GITHUB_WORKSPACE%/}/${project_directory#./}
+        echo -e "\nNuspec destination: $nuspec_destination"
+        # Copy nuspec file
+        cp $nuspec_file $nuspec_destination
+        echo "nuspec_destination=${nuspec_destination}" >> $GITHUB_ENV
 
     - name: Update nuspec file using PowerShell
       shell: pwsh
