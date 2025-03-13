@@ -77,7 +77,7 @@ runs:
       run: |
         cd ${{ inputs.working_directory }}
         nuspec_Destination=${{ env.nuspec_destination }}
-        echo "Nuspec destination: $nuspec_Destination"
+        Write-Host "Nuspec destination: $nuspec_Destination"
         # $nuspecFiles = Get-ChildItem -Path $nuspec_Destination -Filter *.nuspec -File
         # if (!$nuspecFiles) {
         #     Write-Host "Nuspec file has not been found in $nuspecFiles"
