@@ -62,7 +62,7 @@ runs:
         echo "Nuget name: $nuget_name"
         # 2. Git description
         # update description
-        # git_description=$(git show --summary)
+        git_description=$(git show --summary)
         # echo "Git description: $git_description"
         # echo "git_description=${git_description}" >> $GITHUB_ENV
         # 3. Nuspec file path
