@@ -68,8 +68,8 @@ runs:
       shell: pwsh
       run: |
         cd ${{ inputs.working_directory }}
-        # 1. nuspec description
-        $git_description=(git show --summary) -Join '\n'
+        # 1. Nuspec directory
+        $nuspec_Destination = $env:nuspec_destination
         Write-Host "Nuspec destination: $nuspec_Destination"
 
         $nuspecFiles = Get-ChildItem -Path $nuspec_Destination -Filter *.nuspec -File
@@ -81,6 +81,9 @@ runs:
             Write-Host "Nuspec file must be single."
             exit 1
         }
+        # 1. nuspec description
+        $git_description=(git show --summary) -Join '\n'
+
         # $git_description = $env:git_description
         # $xmlPath = $nuspecFiles[0]
         # if (-not (Test-Path $xmlPath)) {
