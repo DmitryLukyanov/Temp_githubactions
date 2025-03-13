@@ -41,6 +41,7 @@ jobs:
       with:
         working_directory: .
         project_directory: ./SPZipper
+        # repo must be accesible
         nuget_name: Complited_default_debug
         nuget_version: "5.0.0"
         configuration: "Debug"
