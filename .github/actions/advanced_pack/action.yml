@@ -77,9 +77,7 @@ runs:
       run: |
         cd ${{ inputs.working_directory }}
         echo "!!!"
-        echo "$nuspec_destination"
-        echo "${nuspec_destination}"
-        echo ${nuspec_destination}
+        echo "${{ env.nuspec_destination}}"
     #     # Define the path to your nuSpec file (adjust if necessary)
     #     $xmlPath = Join-Path -Path $PSScriptRoot -ChildPath "SPZipper/SPZipper.nuspec"
     #     if (-not (Test-Path $xmlPath)) {
