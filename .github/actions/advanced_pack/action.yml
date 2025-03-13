@@ -26,6 +26,11 @@ inputs:
     description: "The glob patter to find the default package that will be used to get nuspec file. The default: .symbols.nupkg"
     required: false
     default: ".symbols.nupkg"
+  nuget_pack_options:
+    description: "The options for nuget pack. The default: -Symbols"
+    required: false
+    default: "-Symbols"
+
 
 runs:
   using: composite
@@ -41,7 +46,7 @@ runs:
         cd ${{ inputs.working_directory }}
         version=${{ inputs.nuget_version }}
         echo "Starting default pack.."
-        nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -Symbols -OutputDirectory ${{ inputs.output_path }} -Version $version
+        nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} -Version $version ${{ inputs.nuget_pack_options }}
 
     - name: Copy nuspec file
       shell: bash
@@ -137,5 +142,5 @@ runs:
         fi
         version=${{ inputs.nuget_version }}
         echo "Starting custom pack.."
-        nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -Symbols -OutputDirectory ${{ inputs.output_path }} -Version $version
+        nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} -Version $version ${{ inputs.nuget_pack_options }}
  
