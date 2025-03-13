@@ -95,18 +95,18 @@ runs:
         if (-not (Test-Path $xmlPath)) {
             throw "Error: The file path '$($xmlPath)' does not exist."
         }
-        # Load the XML document
-        [xml]$xmlDoc = Get-Content -Raw  $xmlPath
-        $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
-        $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
-        # Update the <id> node
-        $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
-        if ($idNode -ne $null) {
-            $idNode.InnerText = "${{ inputs.nuget_name }}"
-            Write-Host "<id> has been found: $($idNode.InnerText)."
-        } else {
-            Write-Host "<id> node not found."
-        }
+        # # Load the XML document
+        # [xml]$xmlDoc = Get-Content -Raw  $xmlPath
+        # $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
+        # $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
+        # # Update the <id> node
+        # $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
+        # if ($idNode -ne $null) {
+        #     $idNode.InnerText = "${{ inputs.nuget_name }}"
+        #     Write-Host "<id> has been found: $($idNode.InnerText)."
+        # } else {
+        #     Write-Host "<id> node not found."
+        # }
         # Update the <description> node (supports multi-line text)
         # $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
         # if ($descriptionNode -ne $null) {
