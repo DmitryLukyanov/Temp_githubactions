@@ -111,7 +111,6 @@ runs:
         $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
         if ($descriptionNode -ne $null) {
             $temp=[System.Web.HttpUtility]::HtmlDecode("$git_description")
-            Write-Host "!!! $temp"
             $descriptionNode.InnerText = "temp"
         } else {
             Write-Host "<description> node not found."
