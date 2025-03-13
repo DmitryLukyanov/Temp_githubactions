@@ -19,7 +19,7 @@ inputs:
   glob_to_unzip_package:
     description: 'The glob patter to find the default package that will be used to get nuspec file'
     required: false
-    default: '*.symbols.nupkg'
+    default: '.symbols.nupkg'
 
 runs:
   using: composite
