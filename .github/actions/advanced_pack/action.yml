@@ -68,19 +68,19 @@ runs:
       shell: pwsh
       run: |
         cd ${{ inputs.working_directory }}
-        # # nuspec directory
-        # $nuspec_Destination = $env:nuspec_destination
-        # Write-Host "Nuspec destination: $nuspec_Destination"
-        # $nuspecFiles = Get-ChildItem -Path $nuspec_Destination -Filter *.nuspec -File
-        # if (!$nuspecFiles) {
-        #     Write-Host "Nuspec file has not been found in $nuspec_Destination"
-        #     exit 1
-        # }
-        # if ($nuspecFiles.Count -ne 1) {
-        #     Write-Host "Nuspec file must be single."
-        #     exit 1
-        # }
-        # # git description
+        # 1. nuspec description
+        $git_description=(git show --summary) -Join '\n'
+        Write-Host "Nuspec destination: $nuspec_Destination"
+
+        $nuspecFiles = Get-ChildItem -Path $nuspec_Destination -Filter *.nuspec -File
+        if (!$nuspecFiles) {
+            Write-Host "Nuspec file has not been found in $nuspec_Destination"
+            exit 1
+        }
+        if ($nuspecFiles.Count -ne 1) {
+            Write-Host "Nuspec file must be single."
+            exit 1
+        }
         # $git_description = $env:git_description
         # $xmlPath = $nuspecFiles[0]
         # if (-not (Test-Path $xmlPath)) {
