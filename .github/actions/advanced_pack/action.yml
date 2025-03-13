@@ -50,7 +50,7 @@ runs:
 
         nuget_for_processing_glob=${{ inputs.glob_to_unzip_package }}
 
-        for file in *.symbols.nupkg; do
+        for file in *"$nuget_for_processing_glob"; do
           if [ -e "$file" ]; then
             echo "Unzipping $file..."
             unzip -o "$file" -d . 
