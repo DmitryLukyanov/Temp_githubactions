@@ -56,15 +56,15 @@ runs:
           echo "Nuspec $nuspec_file has not been found"
           exit 1
         fi
-        # 1. Nuget name
-        nuget_name=${{ inputs.nuget_name }}
-        # update package name
-        echo "Nuget name: $nuget_name"
-        # 2. Git description
-        # update description
-        git_description=$(git show --summary)
-        echo "Git description: $git_description"
-        echo "git_description=${git_description}" >> $GITHUB_ENV
+        # # 1. Nuget name
+        # nuget_name=${{ inputs.nuget_name }}
+        # # update package name
+        # echo "Nuget name: $nuget_name"
+        # # 2. Git description
+        # # update description
+        # git_description=$(git show --summary)
+        # echo "Git description: $git_description"
+        # echo "git_description=${git_description}" >> $GITHUB_ENV
         # 3. Nuspec file path
         # project_directory=${{ inputs.project_directory }}
         # nuspec_destination=${GITHUB_WORKSPACE%/}/${project_directory#./}
