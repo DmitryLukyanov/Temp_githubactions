@@ -110,7 +110,9 @@ runs:
         # Update the <description> node (supports multi-line text)
         $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
         if ($descriptionNode -ne $null) {
-            $descriptionNode.InnerText = [System.Web.HttpUtility]::HtmlDecode("$git_description")
+            $temp=[System.Web.HttpUtility]::HtmlDecode("$git_description")
+            Write-Host "!!! $temp"
+            $descriptionNode.InnerText = $temp
         } else {
             Write-Host "<description> node not found."
         }
