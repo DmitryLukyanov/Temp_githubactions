@@ -67,55 +67,55 @@ runs:
         echo -e "\nNuspec destination: $nuspec_destination"
         cp $nuspec_file $nuspec_destination
 
-    - name: Update nuspec file using PowerShell
-      shell: pwsh
-      run: |
-        cd ${{ inputs.working_directory }}
-        ls -R
-        # Define the path to your nuSpec file (adjust if necessary)
-        $xmlPath = Join-Path -Path $PSScriptRoot -ChildPath "SPZipper/SPZipper.nuspec"
-        if (-not (Test-Path $xmlPath)) {
-            throw "Error: The file path '$($xmlPath)' does not exist."
-        }
-        # Load the XML document
-        [xml]$xmlDoc = Get-Content -Raw  $xmlPath
-        # Create a namespace manager for the default namespace
-        $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
-        $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
-        # Update the <id> node
-        $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
-        if ($idNode -ne $null) {
-            $idNode.InnerText = ${{ inputs.nuget_name }}
-            Write-Host "<id> has been found: $($idNode.InnerText)."
-        } else {
-            Write-Host "<id> node not found."
-        }
+    # - name: Update nuspec file using PowerShell
+    #   shell: pwsh
+    #   run: |
+    #     cd ${{ inputs.working_directory }}
+    #     ls -R
+    #     # Define the path to your nuSpec file (adjust if necessary)
+    #     $xmlPath = Join-Path -Path $PSScriptRoot -ChildPath "SPZipper/SPZipper.nuspec"
+    #     if (-not (Test-Path $xmlPath)) {
+    #         throw "Error: The file path '$($xmlPath)' does not exist."
+    #     }
+    #     # Load the XML document
+    #     [xml]$xmlDoc = Get-Content -Raw  $xmlPath
+    #     # Create a namespace manager for the default namespace
+    #     $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
+    #     $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
+    #     # Update the <id> node
+    #     $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
+    #     if ($idNode -ne $null) {
+    #         $idNode.InnerText = ${{ inputs.nuget_name }}
+    #         Write-Host "<id> has been found: $($idNode.InnerText)."
+    #     } else {
+    #         Write-Host "<id> node not found."
+    #     }
 
-        # Update the <description> node (supports multi-line text)
-        $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
-        if ($descriptionNode -ne $null) {
-            $descriptionNode.InnerText = "This is line 1
-        This is line 2
-        This is line 3"
-        } else {
-            Write-Host "<description> node not found."
-        }
+    #     # Update the <description> node (supports multi-line text)
+    #     $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
+    #     if ($descriptionNode -ne $null) {
+    #         $descriptionNode.InnerText = "This is line 1
+    #     This is line 2
+    #     This is line 3"
+    #     } else {
+    #         Write-Host "<description> node not found."
+    #     }
 
 
-        # Save the updated XML back to the file
-        $xmlDoc.Save($xmlPath)
-        Write-Host "XML document updated successfully!."
+    #     # Save the updated XML back to the file
+    #     $xmlDoc.Save($xmlPath)
+    #     Write-Host "XML document updated successfully!."
 
-    - name: Custom pack
-      shell: bash
-      run: |
-        cd ${{ inputs.working_directory }}
-        project_directory=${{ inputs.project_directory }}
-        if ! ls $project_directory/*.nuspec >/dev/null 2>&1; then
-          echo "Error: Nuspec file must exist in ${project_directory}" >&2
-          exit 1
-        fi
-        version=${{ inputs.nuget_version }}
-        echo "Starting custom pack.."
-        nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -Symbols -OutputDirectory ${{ inputs.output_path }} -Version $version
+    # - name: Custom pack
+    #   shell: bash
+    #   run: |
+    #     cd ${{ inputs.working_directory }}
+    #     project_directory=${{ inputs.project_directory }}
+    #     if ! ls $project_directory/*.nuspec >/dev/null 2>&1; then
+    #       echo "Error: Nuspec file must exist in ${project_directory}" >&2
+    #       exit 1
+    #     fi
+    #     version=${{ inputs.nuget_version }}
+    #     echo "Starting custom pack.."
+    #     nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -Symbols -OutputDirectory ${{ inputs.output_path }} -Version $version
  
