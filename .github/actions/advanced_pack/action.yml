@@ -56,19 +56,20 @@ runs:
           echo "Nuspec $nuspec_file has not been found"
           exit 1
         fi
+        # 1. Nuget name
         nuget_name=${{ inputs.nuget_name }}
         # update package name
         echo "Nuget name: $nuget_name"
-        #sed -i "s/\(<id>\)[^<]*\(<\/id>\)/\1${nuget_name}\2/" $nuspec_file
-        xmlstarlet ed -u "//id" -v "$nuget_name" "$nuspec_file" > updated_file && mv updated_file "$nuspec_file"
+        # 2. Git description
         # update description
         git_description=$(git show --summary)
         echo "Git description: $git_description"
-        # sed -i "s#\(<description>\)[^<]*\(<\/description>\)#\1${git_description}\2#" $nuspec_file
-        cat $nuspec_file
+        echo "git_description=${git_description}" >> $GITHUB_ENV
+        # 3. Nuspec file path
         project_directory=${{ inputs.project_directory }}
         nuspec_destination=${GITHUB_WORKSPACE%/}/${project_directory#./}
         echo -e "\nNuspec destination: $nuspec_destination"
+        # Copy nuspec file
         cp $nuspec_file $nuspec_destination
         echo "nuspec_destination=${nuspec_destination}" >> $GITHUB_ENV
 
@@ -76,6 +77,7 @@ runs:
       shell: pwsh
       run: |
         cd ${{ inputs.working_directory }}
+        # nuspec directory
         $nuspec_Destination = $env:nuspec_destination
         Write-Host "Nuspec destination: $nuspec_Destination"
         $nuspecFiles = Get-ChildItem -Path $nuspec_Destination -Filter *.nuspec -File
@@ -87,6 +89,8 @@ runs:
             Write-Host "Nuspec file must be single."
             exit 1
         }
+        # git description
+        $git_description = $env:git_description
         $xmlPath = $nuspecFiles[0]
         if (-not (Test-Path $xmlPath)) {
             throw "Error: The file path '$($xmlPath)' does not exist."
@@ -106,9 +110,7 @@ runs:
         # Update the <description> node (supports multi-line text)
         $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
         if ($descriptionNode -ne $null) {
-            $descriptionNode.InnerText = "This is line 1
-        This is line 2
-        This is line 3"
+            $descriptionNode.InnerText = "$git_description"
         } else {
             Write-Host "<description> node not found."
         }
