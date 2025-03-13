@@ -103,17 +103,17 @@ runs:
         } else {
             Write-Host "<id> node not found."
         }
-        # # Update the <description> node (supports multi-line text)
-        # $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
-        # if ($descriptionNode -ne $null) {
-        #     $descriptionNode.InnerText = "This is line 1
-        # This is line 2
-        # This is line 3"
-        # } else {
-        #     Write-Host "<description> node not found."
-        # }
-        # $xmlDoc.Save($xmlPath)
-        # cat $xmlPath
+        # Update the <description> node (supports multi-line text)
+        $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
+        if ($descriptionNode -ne $null) {
+            $descriptionNode.InnerText = "This is line 1
+        This is line 2
+        This is line 3"
+        } else {
+            Write-Host "<description> node not found."
+        }
+        $xmlDoc.Save($xmlPath)
+        cat $xmlPath
 
     # - name: Custom pack
     #   shell: bash
