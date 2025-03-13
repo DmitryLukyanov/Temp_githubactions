@@ -59,7 +59,7 @@ runs:
 
         echo "Nupkg for processing: $file"
         version=${{ inputs.nuget_version }}
-        nuspec_file="${file%.$version.symbols.nupkg}.nuspec"
+        nuspec_file="${file%.$version$nuget_for_processing_glob}.nuspec"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
           exit 1
