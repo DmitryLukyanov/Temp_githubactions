@@ -110,16 +110,16 @@ runs:
         $xmlDoc.Save($xmlPath)
         cat $xmlPath
 
-    # - name: Custom pack
-    #   shell: bash
-    #   run: |
-    #     cd ${{ inputs.working_directory }}
-    #     project_directory=${{ inputs.project_directory }}
-    #     if ! ls $project_directory/*.nuspec >/dev/null 2>&1; then
-    #       echo "Error: Nuspec file must exist in ${project_directory}" >&2
-    #       exit 1
-    #     fi
-    #     version=${{ inputs.nuget_version }}
-    #     echo "Starting custom pack.."
-    #     nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -Symbols -OutputDirectory ${{ inputs.output_path }} -Version $version
+    - name: Custom pack
+      shell: bash
+      run: |
+        cd ${{ inputs.working_directory }}
+        project_directory=${{ inputs.project_directory }}
+        if ! ls $project_directory/*.nuspec >/dev/null 2>&1; then
+          echo "Error: Nuspec file must exist in ${project_directory}" >&2
+          exit 1
+        fi
+        version=${{ inputs.nuget_version }}
+        echo "Starting custom pack.."
+        nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -Symbols -OutputDirectory ${{ inputs.output_path }} -Version $version
  
