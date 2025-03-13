@@ -40,7 +40,7 @@ jobs:
       uses: ./.github/actions/advanced_pack
       with:
         working_directory: .
-        project_directory: SPZipper
+        project_directory: ./SPZipper
         nuget_name: TR.SPBinder.SPZipper_debug
         nuget_version: "2.0.0"
         configuration: "Debug"

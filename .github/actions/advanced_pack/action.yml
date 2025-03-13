@@ -3,6 +3,9 @@ name: Advanced pack
 inputs:
   working_directory:
     required: true
+  # Supported formats:
+  # ./Path
+  # Path
   project_directory:
     required: true
   nuget_name:
@@ -67,12 +70,14 @@ runs:
         nuspec_destination=${GITHUB_WORKSPACE%/}/${project_directory#./}
         echo -e "\nNuspec destination: $nuspec_destination"
         cp $nuspec_file $nuspec_destination
+        echo "nuspec_destination=${nuspec_destination}" >> $GITHUB_ENV
 
-    # - name: Update nuspec file using PowerShell
-    #   shell: pwsh
-    #   run: |
-    #     cd ${{ inputs.working_directory }}
-    #     ls -R
+    - name: Update nuspec file using PowerShell
+      shell: pwsh
+      run: |
+        cd ${{ inputs.working_directory }}
+        ls -R
+        echo "$nuspec_destination"
     #     # Define the path to your nuSpec file (adjust if necessary)
     #     $xmlPath = Join-Path -Path $PSScriptRoot -ChildPath "SPZipper/SPZipper.nuspec"
     #     if (-not (Test-Path $xmlPath)) {
