@@ -50,17 +50,12 @@ runs:
 
         nuget_for_processing_glob=${{ inputs.glob_to_unzip_package }}
 
-        for file in "*.symbols.nupkg"; do
+        for file in *.symbols.nupkg; do
           if [ -e "$file" ]; then
             echo "Unzipping $file..."
             unzip -o "$file" -d . 
           fi
         done
-
-        if [ ! file ]; then
-          echo "Package file has not been found"
-          exit 1
-        fi
 
         echo "Nupkg for processing: $file"
         version=${{ inputs.nuget_version }}
