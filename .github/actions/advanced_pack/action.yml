@@ -115,7 +115,7 @@ runs:
         #     Write-Host "<description> node not found."
         # }
         # $xmlDoc.Save($xmlPath)
-        cat $xmlPath
+        # cat $xmlPath
 
     # - name: Custom pack
     #   shell: bash
