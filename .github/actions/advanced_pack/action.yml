@@ -89,12 +89,12 @@ runs:
             Write-Host "Nuspec file must be single."
             exit 1
         }
-        # git description
-        $git_description = $env:git_description
-        $xmlPath = $nuspecFiles[0]
-        if (-not (Test-Path $xmlPath)) {
-            throw "Error: The file path '$($xmlPath)' does not exist."
-        }
+        # # git description
+        # $git_description = $env:git_description
+        # $xmlPath = $nuspecFiles[0]
+        # if (-not (Test-Path $xmlPath)) {
+        #     throw "Error: The file path '$($xmlPath)' does not exist."
+        # }
         # # Load the XML document
         # [xml]$xmlDoc = Get-Content -Raw  $xmlPath
         # $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
