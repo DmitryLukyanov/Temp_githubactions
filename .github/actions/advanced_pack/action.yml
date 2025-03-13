@@ -16,6 +16,10 @@ inputs:
     required: true
   output_path:
     required: true
+  glob_to_unzip_package:
+    description: 'The glob patter to find the default package that will be used to get nuspec file'
+    required: false
+    default: '*.symbols.nupkg'
 
 runs:
   using: composite
@@ -43,6 +47,10 @@ runs:
         echo "Unzipped artifacts path: $unzipped_artifacts"
         cp -r $artifacts $unzipped_artifacts
         cd $unzipped_artifacts
+
+        echo "!!! $INPUT_NUGET_NAME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        nuget_for_processing_glob=${{ inputs.glob_to_unzip_package }}
+
         for file in *.symbols.nupkg; do
           if [ -e "$file" ]; then
             echo "Unzipping $file..."
@@ -100,7 +108,7 @@ runs:
         }
 
         # 2. Set description
-        $git_description=(git show --summary) -Join '<br/>'
+        $git_description=(git show --summary) -Join '\n'
         # Update the <description> node (supports multi-line text)
         $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
         if ($descriptionNode -ne $null) {
