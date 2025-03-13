@@ -98,7 +98,7 @@ runs:
         # Update the <id> node
         $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
         if ($idNode -ne $null) {
-            $idNode.InnerText = ${{ inputs.nuget_name }}
+            $idNode.InnerText = "${{ inputs.nuget_name }}"
             Write-Host "<id> has been found: $($idNode.InnerText)."
         } else {
             Write-Host "<id> node not found."
