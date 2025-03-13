@@ -2,7 +2,7 @@ name: Build .Net Framework
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
   workflow_call:
 
