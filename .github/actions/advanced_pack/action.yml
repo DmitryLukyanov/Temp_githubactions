@@ -96,6 +96,7 @@ runs:
             Write-Host "<id> has been found: $($idNode.InnerText)."
         } else {
             Write-Host "<id> node not found."
+            exit 1
         }
 
         # 2. Set description
@@ -106,6 +107,7 @@ runs:
             $descriptionNode.InnerText = "$git_description"
         } else {
             Write-Host "<description> node not found."
+            exit 1
         }
         $xmlDoc.Save($xmlPath)
         cat $xmlPath
