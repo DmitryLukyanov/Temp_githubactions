@@ -43,7 +43,7 @@ jobs:
         project_directory: ./SPZipper
         # repo must be accesible
         nuget_name: Complited_default_release_portable
-        nuget_version: "7.0.0"
+        nuget_version: "8.0.0"
         configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
         nuget_pack_options: -Symbols -SymbolPackageFormat snupkg
@@ -79,12 +79,12 @@ jobs:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         shell: bash
         run: |
-          for pkg in ./artifacts/*.nupkg; do
+          for pkg in ./artifacts/Complited_*.nupkg; do
             echo "Publishing ${pkg}..."
             nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
           done
 
-          for pkg in ./artifacts/*.snupkg; do
+          for pkg in ./artifacts/Complited_*.snupkg; do
             echo "Publishing ${pkg}..."
             nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
           done
