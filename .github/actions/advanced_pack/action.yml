@@ -124,7 +124,7 @@ runs:
         # Update the <description> node (supports multi-line text)
         $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
         if ($descriptionNode -ne $null) {
-            $descriptionNode.InnerText = "$git_description"
+            $descriptionNode.InnerText = "Commit info: $git_description"
         } else {
             Write-Host "<description> node not found."
             exit 1
