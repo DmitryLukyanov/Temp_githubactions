@@ -155,6 +155,8 @@ runs:
         Get-ChildItem -Path $artifacts -File | ForEach-Object {
             $currentBaseName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
             if ($currentBaseName -ne $desiredNugetName) {
+                Write-Host "#current: $currentBaseName"
+                Write-Host "#desired: $desiredNugetName"
                 $oldExtension = $_.Extension
                 # Compute the new extension by appending ".orig" to the old extension
                 $newExtension = "$oldExtension.orig"
