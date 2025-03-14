@@ -120,9 +120,7 @@ runs:
         }
 
         # 2. Set description
-        $git_description="git 
-        details
-        !!!"
+        $git_description="git \r\n details \r\n !!!"
         # (git show --summary) -Join '\n'
         # Update the <description> node (supports multi-line text)
         $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)

@@ -13,9 +13,9 @@ namespace SPZipper
             Console.WriteLine("printing3");
         }
 
-        public void Print6()
+        public void Print7()
         {
-            Console.WriteLine("printing6");
+            Console.WriteLine("printing7");
         }
     }
 }
