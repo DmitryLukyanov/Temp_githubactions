@@ -24,13 +24,13 @@ inputs:
     description: "Output path. For example: ./PROJECT_NAME/package"
     required: true
   glob_to_unzip_package:
-    description: "The glob patter to find the default package that will be used to get nuspec file. The default: .symbols.nupkg"
+    description: "The glob patter to find the default package that will be used to get nuspec file. The default: .nupkg"
     required: false
-    default: ".symbols.nupkg"
+    default: ".nupkg"
   nuget_pack_options:
-    description: "The options for nuget pack. The default: -Symbols"
+    description: "The options for nuget pack. The default: -Symbols -SymbolPackageFormat 'snupkg'"
     required: false
-    default: "-Symbols"
+    default: "-Symbols -SymbolPackageFormat snupkg"
 
 
 runs:
@@ -103,7 +103,8 @@ runs:
         }
         $xmlPath = $nuspecFiles[0]
         if (-not (Test-Path $xmlPath)) {
-            throw "Error: The file path '$($xmlPath)' does not exist."
+            Write-Host "Error: The file path '$($xmlPath)' does not exist."
+            exit 1
         }
         # Load the XML document
         [xml]$xmlDoc = Get-Content -Raw  $xmlPath
@@ -119,7 +120,7 @@ runs:
             exit 1
         }
 
-        # 2. Set description
+        # 2. Set description as git git commit details
         $git_description=(git show --summary) -Join "`r`n"
         # Update the <description> node (supports multi-line text)
         $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
@@ -144,4 +145,22 @@ runs:
         version=${{ inputs.nuget_version }}
         echo "Starting custom pack.."
         nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} -Version $version ${{ inputs.nuget_pack_options }}
- 
+
+    - name: Rename original packages
+      shell: pwsh
+      run: |
+        Write-Host "Rename original artifacts"
+        $artifacts="${{ inputs.output_path }}"
+        $desiredNugetName = "${{ inputs.nuget_name }}"
+        Get-ChildItem -Path $artifacts -File | ForEach-Object {
+            $currentBaseName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
+            if ($currentBaseName -ne $desiredNugetName) {
+                $oldExtension = $_.Extension
+                # Compute the new extension by appending ".orig" to the old extension
+                $newExtension = "$oldExtension.orig"
+
+                $newPath = [System.IO.Path]::ChangeExtension($_.FullName, $newExtension)
+                Write-Host "Changing extension of '$($_.FullName)' to '$newPath'"
+                Rename-Item -Path $_.FullName -NewName $newPath
+            }
+        }
