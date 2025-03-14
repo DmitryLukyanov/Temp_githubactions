@@ -154,7 +154,7 @@ runs:
         $desiredNugetName = "${{ inputs.nuget_name }}"
         Get-ChildItem -Path $artifacts -File | ForEach-Object {
             $currentBaseName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
-            if ($currentBaseName -ne $desiredNugetName) {
+            if (-not ($currentBaseName.StartsWith($desiredNugetName))) {
                 Write-Host "#current: $currentBaseName"
                 Write-Host "#desired: $desiredNugetName"
                 $oldExtension = $_.Extension
