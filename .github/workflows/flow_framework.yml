@@ -82,7 +82,7 @@ jobs:
             nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
           done
 
-          for pkg in ./artifacts/*.snupkg; do
-            echo "Publishing ${pkg}..."
-            nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
-          done
+          # for pkg in ./artifacts/*.snupkg; do
+          #   echo "Publishing ${pkg}..."
+          #   nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
+          # done
