@@ -112,12 +112,11 @@ runs:
             Write-Host "Error: The file path '$($xmlPath)' does not exist."
             exit 1
         }
-        Write-Host "Befor modifying"
+        Write-Host "Befor modifying:"
         cat $xmlPath
         # Load the XML document
         [xml]$xmlDoc = Get-Content -Raw  $xmlPath
         $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
-        $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
         # 1. Set id
         $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
         if ($idNode -ne $null) {
