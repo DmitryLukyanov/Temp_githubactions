@@ -41,7 +41,7 @@ jobs:
         project_directory: ./SPZipper
         # repo must be accesible
         nuget_name: Complited_default_release_portable
-        nuget_version: "20.0.0"
+        nuget_version: "21.0.0"
         configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
 

@@ -51,9 +51,9 @@ runs:
         version=${{ inputs.nuget_version }}
         echo "Starting default pack.."
         if [ $version ]; then
-            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} $pack_options
+            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
         else
-            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} $pack_options
+            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
         fi
 
       # unzip previously create .nupkg file and get nuspec file from there. Copy this file to the project directory
@@ -154,7 +154,11 @@ runs:
         fi
         version=${{ inputs.nuget_version }}
         echo "Starting custom pack.."
-        nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} -Version $version ${{ inputs.nuget_pack_options }}
+        if [ $version ]; then
+            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
+        else
+            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
+        fi
 
       # rename extensions of the original nugets just to ignore them in further steps
     - name: Rename original packages
