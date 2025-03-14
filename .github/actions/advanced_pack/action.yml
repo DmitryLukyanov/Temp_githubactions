@@ -15,10 +15,11 @@ inputs:
     required: true
     description: "The expected package name of the package"
   nuget_version:
-    required: true
+    required: false
+    default: ""
     description: "The expected package version of the package"
   configuration:
-    description: "Build configuration. DEBUG/RELEASE/.."
+    description: "Build configuration. DEBUG | RELEASE | .."
     required: true
   output_path:
     description: "Output path. For example: ./PROJECT_NAME/package"
@@ -41,18 +42,26 @@ runs:
       with:
         nuget-version: '6.7.x'
 
+      # create a package a default pack configuration
+      # unfortunately, such approach doesn't allow specififying custom package metadata like name and description, so proceed with next steps
     - name: Regular pack
       shell: bash
       run: |
         cd ${{ inputs.working_directory }}
         version=${{ inputs.nuget_version }}
         echo "Starting default pack.."
-        nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} -Version $version ${{ inputs.nuget_pack_options }}
+        pack_options=${{ inputs.nuget_pack_options }}
+        if [ $version ]; then
+            $pack_options = $pack_options + "-Version ${{ inputs.nuget_version }}"
+            echo "Updated pack options: $pack_options"
+        fi
+        nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} $pack_options
 
-    - name: Copy nuspec file
+      # unzip previously create .nupkg file and get nuspec file from there. Copy this file to the project directory
+    - name: Get and copy nuspec file
       shell: bash
       run: |
-        # TODO: skip if the nuspec already exists
+        # TODO: skip if the nuspec already exists in the project
         echo "Prepare nuspec.."
         artifacts=${{ inputs.output_path }}
         unzipped_artifacts="${artifacts}_unzipped"
@@ -84,6 +93,7 @@ runs:
         cp $nuspec_file $nuspec_destination
         echo "nuspec_destination=${nuspec_destination}" >> $GITHUB_ENV
 
+      # modify nuspec file
     - name: Update nuspec file using PowerShell
       shell: pwsh
       run: |
@@ -133,6 +143,7 @@ runs:
         $xmlDoc.Save($xmlPath)
         cat $xmlPath
 
+      # run nuget pack again but based on the newly configured nuspec
     - name: Custom pack
       shell: bash
       run: |
@@ -146,6 +157,7 @@ runs:
         echo "Starting custom pack.."
         nuget pack $project_directory -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} -Version $version ${{ inputs.nuget_pack_options }}
 
+      # rename extensions of the original nugets just to ignore them in further steps
     - name: Rename original packages
       shell: pwsh
       run: |
