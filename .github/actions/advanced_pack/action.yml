@@ -50,12 +50,11 @@ runs:
         cd ${{ inputs.working_directory }}
         version=${{ inputs.nuget_version }}
         echo "Starting default pack.."
-        pack_options=${{ inputs.nuget_pack_options }}
         if [ $version ]; then
-            $pack_options = $pack_options + "-Version ${{ inputs.nuget_version }}"
-            echo "Updated pack options: $pack_options"
+            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} $pack_options
+        else
+            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} $pack_options
         fi
-        nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} $pack_options
 
       # unzip previously create .nupkg file and get nuspec file from there. Copy this file to the project directory
     - name: Get and copy nuspec file
