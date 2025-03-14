@@ -42,7 +42,7 @@ jobs:
         # repo must be accesible
         nuget_name: Complited_default_release_portable
         # TODO: make version optional
-        nuget_version: "22.0.0"
+        nuget_version: "23.0.0"
         configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
 
@@ -63,7 +63,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nuget_artifacts
-          path: ./artifacts
+          path: ./downloaded_artifacts
 
       - name: Publish to NuGet
         env:
@@ -71,7 +71,7 @@ jobs:
         shell: bash
         run: |
           # also publish related snupkg packages
-          for pkg in ./artifacts/*.nupkg; do
+          for pkg in ./downloaded_artifacts/*.nupkg; do
             echo "Publishing ${pkg}...!"
             nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
           done
