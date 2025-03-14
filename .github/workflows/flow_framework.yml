@@ -43,7 +43,7 @@ jobs:
         project_directory: ./SPZipper
         # repo must be accesible
         nuget_name: Complited_default_release_portable
-        nuget_version: "17.0.0"
+        nuget_version: "18.0.0"
         configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
 
@@ -78,7 +78,7 @@ jobs:
         shell: bash
         run: |
           for pkg in ./artifacts/*.nupkg; do
-            echo "Publishing ${pkg}..."
+            echo "Publishing ${pkg}...!"
             nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
           done
 
