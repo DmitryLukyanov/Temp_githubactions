@@ -117,8 +117,9 @@ runs:
         # Load the XML document
         [xml]$xmlDoc = Get-Content -Raw  $xmlPath
         $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
+        # $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
         # 1. Set id
-        $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
+        $idNode = $xmlDoc.SelectSingleNode("//id", $nsMgr)
         if ($idNode -ne $null) {
             $idNode.InnerText = "${{ inputs.nuget_name }}"
             Write-Host "<id> has been found: $($idNode.InnerText)."
@@ -130,7 +131,7 @@ runs:
         # 2. Set description as git git commit details
         $git_description=(git show --summary) -Join "`r`n"
         # Update the <description> node (supports multi-line text)
-        $descriptionNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:description", $nsMgr)
+        $descriptionNode = $xmlDoc.SelectSingleNode("//description", $nsMgr)
         if ($descriptionNode -ne $null) {
             $descriptionNode.InnerText = "Commit info: $git_description"
         } else {
