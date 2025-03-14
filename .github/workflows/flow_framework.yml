@@ -41,15 +41,10 @@ jobs:
         project_directory: ./SPZipper
         # repo must be accesible
         nuget_name: Complited_default_release_portable
+        # TODO: make version optional
         nuget_version: "22.0.0"
         configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
-
-    #   # -MSBuildVersion: 16.11.2.50704 might be required too
-    # - name: Pack
-    #   working-directory: ${{env.GITHUB_WORKSPACE}}
-    #   # specifying name is a bit more tricky, will be done as a separate step
-    #   run: nuget pack ./SPZipper -Build -IncludeReferencedProjects -Properties Configuration=Release -Symbols -OutputDirectory ${{ env.PACKAGE_PATH }} # -Version ${{ env.PACKAGE_VERSION }}
 
     - name: Upload nupkg artifact
       uses: actions/upload-artifact@v4

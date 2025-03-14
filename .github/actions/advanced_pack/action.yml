@@ -5,17 +5,14 @@ inputs:
   working_directory:
     required: true
     description: "The wokring directory"
-  # Supported formats:
-  # ./Path
-  # Path
   project_directory:
     required: true
-    description: "The project directory"
+    description: "The project directory. Supported formats: './Path' | 'Path'"
   nuget_name:
     required: true
     description: "The expected package name of the package"
   nuget_version:
-    required: false
+    required: true
     default: ""
     description: "The expected package version of the package"
   configuration:
