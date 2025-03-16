@@ -65,7 +65,7 @@ runs:
           echo "Project file has not been found in $project_directory"
         fi
 
-        # TODO: skip if the nuspec already exists in the project
+        # Unzipping nupkg..
         echo "Prepare nuspec.."
         artifacts=${{ inputs.output_path }}
         unzipped_artifacts="${artifacts}_unzipped"
@@ -73,14 +73,15 @@ runs:
         cp -r $artifacts $unzipped_artifacts
         cd $unzipped_artifacts
 
-        for file in "${project_name}"*.nupkg; do
-          if [ -e "$file" ]; then
-            echo "Unzipping $file..."
-            unzip -o "$file" -d . 
+        for nuget_file in "${project_name}"*.nupkg; do
+          if [ -e "$nuget_file" ]; then
+            echo "Unzipping $nuget_file..."
+            unzip -o "$nuget_file" -d . 
           fi
         done
+        # Unzipping has been complited
 
-        echo "Nupkg for processing: $file"
+        echo "Nupkg for processing: $nuget_file"
         nuspec_file="$project_name.nuspec"
         echo "Nuspec file: $nuspec_file"
         if [ ! -f $nuspec_file ]; then
