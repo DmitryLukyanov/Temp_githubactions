@@ -21,10 +21,10 @@ inputs:
   output_path:
     description: "Output path. For example: ./PROJECT_NAME/package"
     required: true
-  glob_to_unzip_package:
-    description: "The glob patter to find the default package that will be used to get nuspec file. The default: .nupkg"
-    required: false
-    default: ".nupkg"
+  # glob_to_unzip_package:
+  #   description: "The glob patter to find the default package that will be used to get nuspec file. The default: .nupkg"
+  #   required: false
+  #   default: ".nupkg"
   nuget_pack_options:
     description: "The options for nuget pack. The default: -Symbols -SymbolPackageFormat 'snupkg'"
     required: false
@@ -57,6 +57,13 @@ runs:
     - name: Get and copy nuspec file
       shell: bash
       run: |
+        project_directory=${{ inputs.project_directory }}
+        project_file=$(find $project_directory -type f \( -name "*.csproj" -o -name "*.vbproj" \) | head -n 1)
+        echo "Project file: $project_file"
+        if [ ! project_file ]; then
+          echo "Project file has not been found in $project_directory"
+        fi
+
         # TODO: skip if the nuspec already exists in the project
         echo "Prepare nuspec.."
         artifacts=${{ inputs.output_path }}
@@ -65,9 +72,9 @@ runs:
         cp -r $artifacts $unzipped_artifacts
         cd $unzipped_artifacts
 
-        nuget_for_processing_glob=${{ inputs.glob_to_unzip_package }}
+        # nuget_for_processing_glob=${{ inputs.glob_to_unzip_package }}
 
-        for file in *"$nuget_for_processing_glob"; do
+        for file in "${project_file}"*.nupkg; do
           if [ -e "$file" ]; then
             echo "Unzipping $file..."
             unzip -o "$file" -d . 
@@ -83,7 +90,6 @@ runs:
           echo "Nuspec $nuspec_file has not been found"
           exit 1
         fi
-        project_directory=${{ inputs.project_directory }}
         nuspec_destination=${GITHUB_WORKSPACE%/}/${project_directory#./}
         echo -e "\nNuspec destination: $nuspec_destination"
         # Copy nuspec file
