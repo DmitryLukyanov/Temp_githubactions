@@ -59,7 +59,8 @@ runs:
       run: |
         project_directory=${{ inputs.project_directory }}
         project_file=$(find $project_directory -type f \( -name "*.csproj" -o -name "*.vbproj" \) | head -n 1)
-        echo "Project file: $project_file"
+        project_name=$(basename "$project_directory")
+        echo "Project file: $project_file, Project name: $project_name"
         if [ ! project_file ]; then
           echo "Project file has not been found in $project_directory"
         fi
@@ -74,7 +75,7 @@ runs:
 
         # nuget_for_processing_glob=${{ inputs.glob_to_unzip_package }}
 
-        for file in "${project_file}"*.nupkg; do
+        for file in "${project_name}"*.nupkg; do
           if [ -e "$file" ]; then
             echo "Unzipping $file..."
             unzip -o "$file" -d . 
@@ -84,7 +85,7 @@ runs:
         echo "Nupkg for processing: $file"
         #version=${{ inputs.nuget_version }}
         #nuspec_file="${file%.$version$nuget_for_processing_glob}.nuspec"
-        nuspec_file="$(basename "${{ inputs.project_directory }}").nuspec"
+        nuspec_file="$project_name.nuspec"
         echo "!!nuspec file: $nuspec_file####"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
