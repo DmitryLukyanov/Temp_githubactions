@@ -12,7 +12,7 @@ inputs:
     required: true
     description: "The expected package name of the package"
   nuget_version:
-    required: true
+    required: false
     default: ""
     description: "The expected package version of the package"
   configuration:
@@ -75,8 +75,10 @@ runs:
         done
 
         echo "Nupkg for processing: $file"
-        version=${{ inputs.nuget_version }}
-        nuspec_file="${file%.$version$nuget_for_processing_glob}.nuspec"
+        #version=${{ inputs.nuget_version }}
+        #nuspec_file="${file%.$version$nuget_for_processing_glob}.nuspec"
+        nuspec_file="$(basename "$(dirname "${{ inputs.project_directory }}")").txt"
+        echo "!!nuspec file: $nuspec_file####"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
           exit 1

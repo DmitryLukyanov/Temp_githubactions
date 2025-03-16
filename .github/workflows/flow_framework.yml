@@ -42,7 +42,7 @@ jobs:
         # repo must be accesible
         nuget_name: Complited_default_release_portable
         # TODO: make version optional
-        nuget_version: "24.0.0"
+        nuget_version: "25.0.0"
         configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
 
