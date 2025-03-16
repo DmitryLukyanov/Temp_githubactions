@@ -77,7 +77,7 @@ runs:
         echo "Nupkg for processing: $file"
         #version=${{ inputs.nuget_version }}
         #nuspec_file="${file%.$version$nuget_for_processing_glob}.nuspec"
-        nuspec_file="$(basename "$(dirname "${{ inputs.project_directory }}")").txt"
+        nuspec_file="$(basename "${{ inputs.project_directory }}").nuspec"
         echo "!!nuspec file: $nuspec_file####"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
