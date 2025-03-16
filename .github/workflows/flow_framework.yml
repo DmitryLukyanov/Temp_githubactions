@@ -42,7 +42,19 @@ jobs:
         # repo must be accesible
         nuget_name: Complited_default_release_portable
         # TODO: make version optional
-        nuget_version: "26.0.0"
+        nuget_version: "27.0.0"
+        configuration: "Release"
+        output_path: ${{ env.PACKAGE_PATH }}
+
+    - name: Advanced pack 2
+      uses: ./.github/actions/advanced_pack
+      with:
+        working_directory: .
+        project_directory: ./SPZipper
+        # repo must be accesible
+        nuget_name: Complited_default_release_portable_2
+        # TODO: make version optional
+        nuget_version: "27.0.1"
         configuration: "Release"
         output_path: ${{ env.PACKAGE_PATH }}
 
