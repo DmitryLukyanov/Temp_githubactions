@@ -59,8 +59,10 @@ runs:
       run: |
         project_directory=${{ inputs.project_directory }}
         project_file=$(find $project_directory -type f \( -name "*.csproj" -o -name "*.vbproj" \) | head -n 1)
-        project_name=$(basename "$project_directory")
-        echo "Project file: $project_file, Project name: $project_name"
+        # project_directory_name=$(basename "$project_directory")
+        # get project file name without extension
+        project_file_name="$(basename "$(basename "$(basename "project_file")" .csproj)" .vbproj)"
+        echo "Project file: $project_file, Project name: $project_file_name"
         if [ ! project_file ]; then
           echo "Project file has not been found in $project_directory"
         fi
@@ -73,16 +75,19 @@ runs:
         cp -r $artifacts $unzipped_artifacts
         cd $unzipped_artifacts
 
-        for nuget_file in "${project_name}"*.nupkg; do
+        for nuget_file in "${project_file_name}"*.nupkg; do
           if [ -e "$nuget_file" ]; then
             echo "Unzipping $nuget_file..."
             unzip -o "$nuget_file" -d . 
+          else
+            echo "Expected nuget file: $nuget_file doesn't exist'"
+            exit 1
           fi
         done
         # Unzipping has been complited
 
         echo "Nupkg for processing: $nuget_file"
-        nuspec_file="$project_name.nuspec"
+        nuspec_file="project_file_name.nuspec"
         echo "Nuspec file: $nuspec_file"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
