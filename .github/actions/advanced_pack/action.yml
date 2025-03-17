@@ -61,7 +61,7 @@ runs:
         project_file=$(find $project_directory -type f \( -name "*.csproj" -o -name "*.vbproj" \) | head -n 1)
         # project_directory_name=$(basename "$project_directory")
         # get project file name without extension
-        project_file_name="$(basename "$(basename "$(basename "project_file")" .csproj)" .vbproj)"
+        project_file_name="$(basename "$(basename "$(basename "$project_file")" .csproj)" .vbproj)"
         echo "Project file: $project_file, Project name: $project_file_name"
         if [ ! project_file ]; then
           echo "Project file has not been found in $project_directory"
