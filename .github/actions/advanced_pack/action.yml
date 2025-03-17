@@ -87,7 +87,7 @@ runs:
         # Unzipping has been complited
 
         echo "Nupkg for processing: $nuget_file"
-        nuspec_file="project_file_name.nuspec"
+        nuspec_file="$project_file_name.nuspec"
         echo "Nuspec file: $nuspec_file"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
