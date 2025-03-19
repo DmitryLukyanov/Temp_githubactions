@@ -98,7 +98,7 @@ runs:
         # Unzipping has been complited
  
         echo "Nupkg for processing: $nuget_file"
-        nuspec_file=$(shopt -s nullglob; files=( *.nuspec ); (( ${#files[@]} == 2 )) && echo "${files[0]}" || { echo "Error: expected exactly one .nuspec file, found ${#files[@]}" >&2; })
+        nuspec_file=$(shopt -s nullglob; files=( *.nuspec ); (( ${#files[@]} == 2 )) && echo "${files[0]}" || { echo "Error: expected exactly one .nuspec file, found ${#files[@]}" >&2; exit 1; })
         echo "Nuspec file: $nuspec_file"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
