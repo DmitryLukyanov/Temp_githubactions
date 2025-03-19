@@ -24,7 +24,7 @@ inputs:
   nuget_pack_options:
     description: "The options for nuget pack. The default: -Symbols -SymbolPackageFormat 'snupkg'"
     required: false
-    default: "-Symbols -SymbolPackageFormat snupkg"
+    default: "-Build -IncludeReferencedProjects -Symbols -SymbolPackageFormat snupkg"
  
 runs:
   using: composite
@@ -45,9 +45,9 @@ runs:
         echo "Starting default pack.."
 
         if [ $version ]; then
-          output=$(nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }})
+          output=$(nuget pack ${{ inputs.project_directory }} -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }})
         else
-          output=$(nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }})
+          output=$(nuget pack ${{ inputs.project_directory }} -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }})
         fi
         package_path=$(echo "$output" \
           | grep "Successfully created package" \
@@ -168,9 +168,9 @@ runs:
         version=${{ inputs.nuget_version }}
         echo "Starting custom pack.."
         if [ $version ]; then
-            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
+            nuget pack ${{ inputs.project_directory }} -Version $version -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
         else
-            nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
+            nuget pack ${{ inputs.project_directory }} -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }}
         fi
  
       # rename extensions of the original nugets just to ignore them in further steps
