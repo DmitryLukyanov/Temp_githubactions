@@ -55,6 +55,10 @@ runs:
           | head -n 1 \
           | sed -E "s/.*Successfully created package '(.*)'.*/\1/")
         package_file_name="$(basename "$(basename "$package_path")" .nupkg)"
+        if [! $package_file_name ]; then
+          echo "!!!"
+          exit 1
+        fi
         echo "package_file_name: $package_file_name"
         echo "created_package_name=${package_file_name}" >> $GITHUB_ENV
  
