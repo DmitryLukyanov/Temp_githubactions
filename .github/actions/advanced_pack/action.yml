@@ -128,7 +128,6 @@ runs:
         [xml]$xmlDoc = Get-Content -Raw  $xmlPath
         $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
         $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
-        $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd")
         # 1. Set id
         $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
         if ($idNode -ne $null) {
