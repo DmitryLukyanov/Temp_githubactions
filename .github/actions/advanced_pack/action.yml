@@ -128,8 +128,15 @@ runs:
         [xml]$xmlDoc = Get-Content -Raw  $xmlPath
         $nsMgr = New-Object System.Xml.XmlNamespaceManager($xmlDoc.NameTable)
         $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
+        $nsMgr.AddNamespace("ns2", "http://schemas.microsoft.com/packaging/2012/16/nuspec.xsd")
         # 1. Set id
         $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
+        if (-not $idNode)
+        {
+            # If not found in ns1, try ns2
+            $idNode = $xmlDoc.SelectSingleNode("//ns2:metadata/ns2:id", $nsMgr)
+        }
+
         if ($idNode -ne $null) {
             $idNode.InnerText = "${{ inputs.nuget_name }}"
             Write-Host "<id> has been found: $($idNode.InnerText)."
