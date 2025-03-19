@@ -130,12 +130,7 @@ runs:
         $nsMgr.AddNamespace("ns", "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
         $nsMgr.AddNamespace("ns2", "http://schemas.microsoft.com/packaging/2012/16/nuspec.xsd")
         # 1. Set id
-        $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id", $nsMgr)
-        if (-not $idNode)
-        {
-            # If not found in ns1, try ns2
-            $idNode = $xmlDoc.SelectSingleNode("//ns2:metadata/ns2:id", $nsMgr)
-        }
+        $idNode = $xmlDoc.SelectSingleNode("//ns:metadata/ns:id | //ns2:metadata/ns2:id", $nsMgr)
 
         if ($idNode -ne $null) {
             $idNode.InnerText = "${{ inputs.nuget_name }}"
