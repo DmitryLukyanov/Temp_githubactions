@@ -4,7 +4,7 @@ description: "Advanced pack"
 inputs:
   working_directory:
     required: true
-    description: "The wokring directory"
+    description: "The working directory"
   project_directory:
     required: true
     description: "The project directory. Supported formats: './Path' | 'Path'"
@@ -25,9 +25,6 @@ inputs:
     description: "The options for nuget pack. The default: -Symbols -SymbolPackageFormat 'snupkg'"
     required: false
     default: "-Symbols -SymbolPackageFormat snupkg"
-  original_nuget_name:
-    description: "An original nuget name for cases when nuget name is not the same as project name"
-    required: false
  
 runs:
   using: composite
@@ -66,19 +63,10 @@ runs:
       run: |
         echo "================================== Get and copy nuspec file ============================"
         artifacts=${{ inputs.output_path }}
-        echo "------------------ Listing of 'artifacts so far'.."
-        ls $artifacts
-        echo "------------------ 'Artifacts so far' has been listed"
 
         nuget_name=$created_package_name
         project_directory=${{ inputs.project_directory }}
-        # project_file=$(find $project_directory -type f \( -name "*.csproj" -o -name "*.vbproj" \) | head -n 1)
-        # project_file_name="$(basename "$(basename "$(basename "$project_file")" .csproj)" .vbproj)"
-        # echo "Project file: $project_file, Project name: $project_file_name, Artifacts: $artifacts"
-        # if [ ! project_file ]; then
-        #   echo "Project file has not been found in $project_directory"
-        # fi
- 
+
         # Unzipping nupkg..
         echo "Prepare nuspec.."
         unzipped_artifacts="${artifacts}_${nuget_name}_unzipped"
@@ -98,7 +86,7 @@ runs:
         # Unzipping has been complited
  
         echo "Nupkg for processing: $nuget_file"
-        nuspec_file=$(shopt -s nullglob; files=( *.nuspec ); (( ${#files[@]} == 2 )) && echo "${files[0]}" || { echo "Error: expected exactly one .nuspec file, found ${#files[@]}" >&2; exit 1; })
+        nuspec_file=$(shopt -s nullglob; files=( *.nuspec ); (( ${#files[@]} == 1 )) && echo "${files[0]}" || { echo "Error: expected exactly one .nuspec file, found ${#files[@]}" >&2; exit 1; })
         echo "Nuspec file: $nuspec_file"
         if [ ! -f $nuspec_file ]; then
           echo "Nuspec $nuspec_file has not been found"
@@ -110,7 +98,6 @@ runs:
         # Copy nuspec file to the project directory
         cp $nuspec_file $nuspec_destination
         echo "nuspec_destination=${nuspec_destination}" >> $GITHUB_ENV
-        # echo "project_file_name=${project_file_name}" >> $GITHUB_ENV
  
       # modify nuspec file
     - name: Update nuspec file using PowerShell
@@ -120,7 +107,6 @@ runs:
         cd ${{ inputs.working_directory }}
         # 1. Nuspec directory
         $nuspec_Destination = $env:nuspec_destination
-        # $project_file_name = $env:project_file_name
         Write-Host "Nuspec destination: $nuspec_Destination"
  
         $nuspecFiles = Get-ChildItem -Path $nuspec_Destination -Filter *.nuspec -File
@@ -193,8 +179,7 @@ runs:
       run: |
         Write-Host "================================== Rename original packages ======================"
         $nuget_name=$env:created_package_name
-        Write-Host "^^^^$nuget_name^^^"
-        Write-Host "Rename original artifacts"
+        Write-Host "Rename original artifacts. Nuget name: $nuget_name"
         $artifacts="${{ inputs.output_path }}"
         $desiredNugetName = "${{ inputs.nuget_name }}"
         Get-ChildItem -Path $artifacts -File | ForEach-Object {
