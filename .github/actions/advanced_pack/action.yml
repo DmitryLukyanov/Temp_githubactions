@@ -49,6 +49,7 @@ runs:
         else
           output=$(nuget pack ${{ inputs.project_directory }} -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }})
         fi
+        echo $output
         package_path=$(echo "$output" \
           | grep "Successfully created package" \
           | head -n 1 \
