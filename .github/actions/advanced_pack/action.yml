@@ -50,6 +50,7 @@ runs:
         output=$(nuget pack ${{ inputs.project_directory }} -Build -IncludeReferencedProjects -Properties Configuration=${{ inputs.configuration }} -OutputDirectory ${{ inputs.output_path }} ${{ inputs.nuget_pack_options }})
         package_name=$(echo "$output" \
             | grep "Successfully created package" \
+            | head -n 1 \
             | sed -E "s/.*Successfully created package '(.*)'.*/\1/")
 
         echo "Package created: $package_name"
