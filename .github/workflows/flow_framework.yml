@@ -40,7 +40,7 @@ jobs:
         working_directory: .
         project_directory: ./LibTest
         # repo must be accesible
-        nuget_name: Complited_default_release_portable2
+        nuget_name: Complited_default_release_portable3
         # TODO: make version optional
         nuget_version: "30.0.0"
         configuration: "Release"

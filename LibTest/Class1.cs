@@ -8,12 +8,12 @@ namespace SPZipper
 {
     public class Class1
     {
-        public void Print3()
+        public void Print23()
         {
             Console.WriteLine("printing3");
         }
 
-        public void Print7()
+        public void Print()
         {
             Console.WriteLine("printing7");
         }
