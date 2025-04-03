@@ -10,8 +10,8 @@
     <ProjectGuid>{9D9EF52D-04CF-4E66-93FE-48D04B4EF23A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPZipper</RootNamespace>
-    <AssemblyName>SPZipper</AssemblyName>
+    <RootNamespace>LibTest</RootNamespace>
+    <AssemblyName>LibTest</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
