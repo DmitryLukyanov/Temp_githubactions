@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
 
 env:
-  SOLUTION_FILE_PATH: ./SPZipper.sln
-  PACKAGE_PATH: ./SPZipper/package
+  SOLUTION_FILE_PATH: ./Lib.sln
+  PACKAGE_PATH: ./Lib/package
   BUILD_CONFIGURATION: Release
 
 permissions:
@@ -38,9 +38,9 @@ jobs:
       uses: ./.github/actions/advanced_pack
       with:
         working_directory: .
-        project_directory: ./SPZipper
+        project_directory: ./Lib
         # repo must be accesible
-        nuget_name: Complited_default_release_portable
+        nuget_name: Complited_default_release_portable2
         # TODO: make version optional
         # nuget_version: "28.0.0"
         configuration: "Release"

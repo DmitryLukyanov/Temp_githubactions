@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CICD", "CICD", "{AC86937A-6
 		.github\workflows\flow_framework.yml = .github\workflows\flow_framework.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPZipper", "SPZipper\SPZipper.csproj", "{9D9EF52D-04CF-4E66-93FE-48D04B4EF23A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibTest", "LibTest\LibTest.csproj", "{9D9EF52D-04CF-4E66-93FE-48D04B4EF23A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
