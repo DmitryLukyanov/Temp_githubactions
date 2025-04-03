@@ -70,6 +70,7 @@ jobs:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         shell: bash
         run: |
+          ls -R
           # also publish related snupkg packages
           for pkg in ./downloaded_artifacts/*.nupkg; do
             echo "Publishing ${pkg}...!"
