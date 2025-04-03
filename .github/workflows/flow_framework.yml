@@ -10,7 +10,7 @@ on:
 
 env:
   SOLUTION_FILE_PATH: ./Lib.sln
-  PACKAGE_PATH: ./Lib/package
+  PACKAGE_PATH: ./LibTest/package
   BUILD_CONFIGURATION: Release
 
 permissions:
@@ -38,7 +38,7 @@ jobs:
       uses: ./.github/actions/advanced_pack
       with:
         working_directory: .
-        project_directory: ./Lib
+        project_directory: ./LibTest
         # repo must be accesible
         nuget_name: Complited_default_release_portable2
         # TODO: make version optional
