@@ -21,58 +21,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
-
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Advanced pack
-      uses: ./.github/actions/advanced_pack
-      with:
-        working_directory: .
-        project_directory: ./LibTest
-        # repo must be accesible
-        nuget_name: Complited_default_release_portable4
-        # TODO: make version optional
-        nuget_version: "31.0.0"
-        configuration: "Release"
-        output_path: ${{ env.PACKAGE_PATH }}
-
-    - name: Upload nupkg artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: nuget_artifacts
-        path: ${{ env.PACKAGE_PATH }}
-
-    # add tests and code quality gates
-
-  publish:
-    runs-on: windows-latest
-    needs: build
-
-    steps:
-      - name: Download nupkg artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: nuget_artifacts
-          path: ./downloaded_artifacts
-
-      - name: Publish to NuGet
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        shell: bash
+      - name: Set version environment variable
+        shell: pwsh
         run: |
-          ls -R
-          # also publish related snupkg packages
-          for pkg in ./downloaded_artifacts/*.nupkg; do
-            echo "Publishing ${pkg}...!"
-            nuget push "${pkg}" -Source https://api.nuget.org/v3/index.json -ApiKey "${NUGET_API_KEY}"
-          done
+          $version = (Get-Date -Format "yyyy.M.d.") + [int](New-TimeSpan -Start (Get-Date).Date -End (Get-Date)).TotalSeconds
+          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+
+      - name: Use the version
+        shell: pwsh
+        run: |
+          echo "Version is: $env:VERSION"
