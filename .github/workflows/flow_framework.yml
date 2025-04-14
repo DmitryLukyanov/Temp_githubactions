@@ -32,7 +32,7 @@ jobs:
 
       - name: Use the version
         run: |
-          echo "Version is: ${{ env.VERSION }}
+          echo "Version is: ${{ env.VERSION }}"
 
       - name: Use the version 2
         shell: pwsh
