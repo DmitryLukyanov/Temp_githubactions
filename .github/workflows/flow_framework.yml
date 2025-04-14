@@ -31,9 +31,8 @@ jobs:
           echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
 
       - name: Use the version
-        shell: pwsh
         run: |
-          echo "Version is: $env:VERSION"
+          echo "Version is: ${{ env.VERSION }}
 
       - name: Use the version 2
         shell: pwsh
