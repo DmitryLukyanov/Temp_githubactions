@@ -34,3 +34,8 @@ jobs:
         shell: pwsh
         run: |
           echo "Version is: $env:VERSION"
+
+      - name: Use the version 2
+        shell: pwsh
+        run: |
+          echo "Version is: $env:VERSION"
